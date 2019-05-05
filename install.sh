@@ -158,7 +158,7 @@ modify_nginx(){
     fi
     sed -i "s/443 ssl http2/${port} ssl http2/" ${nginx_conf}
     sed -i "/server_name/c \\\tserver_name ${domain};" ${nginx_conf}
-    sed -i "s/ray/${camouflage}/" ${nginx_conf}
+    sed -i "s/\/ray\//\/${camouflage}\//" ${nginx_conf}
     sed -i "/proxy_pass/c \\\tproxy_pass http://127.0.0.1:${PORT};" ${nginx_conf}
     sed -i "27i \\\tproxy_intercept_errors on;"  /etc/nginx/nginx.conf
 }
