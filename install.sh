@@ -305,11 +305,7 @@ server {
     error_page                 500 502 503 504 /404/50x.html;
     
     location / {
-        index  index.html index.htm index.php;
-
-        if (!-e \$request_filename) {
-            rewrite  ^(.*)$ /index.php\$1 last;
-        }
+        index  index.html index.htm;
     }
     
     location /ray/ {
