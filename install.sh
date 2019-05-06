@@ -190,12 +190,6 @@ web_camouflage(){
     git clone https://github.com/dunizb/sCalc.git
     cd sCalc
     git clone https://github.com/pkfrom/404.git
-    ## 更改 web 目录所有者及权限
-    sed -i "s/%domain%/${domain}/" /home/wwwroot/sCalc/404/404.html
-    chown -R nginx:nginx /home/wwwroot/sCalc
-    chmod -R 755 /home/wwwroot/sCalc
-    nginx -s stop
-    nginx -c /etc/nginx/nginx.conf
     judge "web 站点伪装"
 
 }
@@ -378,7 +372,11 @@ EOF
 start_process_systemd(){
 
     ## nginx服务在安装完成后会自动启动。需要通过restart或reload重新加载配置
-    systemctl start nginx 
+    ## 更改 web 目录所有者及权限
+    sed -i "s/%domain%/${domain}/" /home/wwwroot/sCalc/404/404.html
+    chown -R nginx:nginx /home/wwwroot/sCalc
+    chmod -R 755 /home/wwwroot/sCalc
+    nginx -c /etc/nginx/nginx.conf
     judge "Nginx 启动"
 
     systemctl start v2ray
