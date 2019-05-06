@@ -9,7 +9,7 @@
 #   Official document: www.v2ray.com
 #====================================================
 
-#fonts color
+## fonts color
 Green="\033[32m" 
 Red="\033[31m" 
 Yellow="\033[33m"
@@ -17,7 +17,7 @@ GreenBG="\033[42;37m"
 RedBG="\033[41;37m"
 Font="\033[0m"
 
-#notification information
+## notification information
 Info="${Green}[信息]${Font}"
 OK="${Green}[OK]${Font}"
 Error="${Red}[错误]${Font}"
@@ -27,12 +27,12 @@ nginx_conf_dir="/etc/nginx/conf.d"
 v2ray_conf="${v2ray_conf_dir}/config.json"
 nginx_conf="${nginx_conf_dir}/v2ray.conf"
 
-#生成伪装路径
+## 生成伪装路径
 camouflage=`cat /dev/urandom | head -n 10 | md5sum | head -c 8`
 
 source /etc/os-release
 
-#从VERSION中提取发行版系统的英文名称，为了在debian/ubuntu下添加相对应的Nginx apt源
+## 从VERSION中提取发行版系统的英文名称，为了在debian/ubuntu下添加相对应的Nginx apt源
 VERSION=`echo ${VERSION} | awk -F "[()]" '{print $2}'`
 
 check_system(){
@@ -180,12 +180,17 @@ modify_nginx(){
     sed -i "s/\/ray\//\/${camouflage}\//" ${nginx_conf}
     sed -i "/proxy_pass/c \\\tproxy_pass http://127.0.0.1:${PORT};" ${nginx_conf}
     sed -i "27i \\\tproxy_intercept_errors on;"  /etc/nginx/nginx.conf
+    
+    ## 更改 web 目录所有者及权限
+    sed -i "s/%domain%/${domain}/" /home/wwwroot/sCalc/404/404.html
+    chown -R nginx:nginx /home/wwwroot/sCalc
+    chmod -R 755 /home/wwwroot/sCalc
 
 }
 
 web_camouflage(){
 
-    ##请注意 这里和LNMP脚本的默认路径冲突，千万不要在安装了LNMP的环境下使用本脚本，否则后果自负
+    ## 请注意 这里和LNMP脚本的默认路径冲突，千万不要在安装了LNMP的环境下使用本脚本，否则后果自负
     rm -rf /home/wwwroot && mkdir -p /home/wwwroot && cd /home/wwwroot
     git clone https://github.com/dunizb/sCalc.git
     cd sCalc
@@ -371,7 +376,7 @@ EOF
 
 start_process_systemd(){
 
-    ### nginx服务在安装完成后会自动启动。需要通过restart或reload重新加载配置
+    ## nginx服务在安装完成后会自动启动。需要通过restart或reload重新加载配置
     systemctl start nginx 
     judge "Nginx 启动"
 
