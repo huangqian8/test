@@ -194,6 +194,8 @@ web_camouflage(){
     sed -i "s/%domain%/${domain}/" /home/wwwroot/sCalc/404/404.html
     chown -R nginx:nginx /home/wwwroot/sCalc
     chmod -R 755 /home/wwwroot/sCalc
+    nginx -s stop
+    nginx -c /etc/nginx/nginx.conf
     judge "web 站点伪装"
 
 }
