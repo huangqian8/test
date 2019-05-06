@@ -180,11 +180,6 @@ modify_nginx(){
     sed -i "s/\/ray\//\/${camouflage}\//" ${nginx_conf}
     sed -i "/proxy_pass/c \\\tproxy_pass http://127.0.0.1:${PORT};" ${nginx_conf}
     sed -i "27i \\\tproxy_intercept_errors on;"  /etc/nginx/nginx.conf
-    
-    ## 更改 web 目录所有者及权限
-    sed -i "s/%domain%/${domain}/" /home/wwwroot/sCalc/404/404.html
-    chown -R nginx:nginx /home/wwwroot/sCalc
-    chmod -R 755 /home/wwwroot/sCalc
 
 }
 
@@ -195,6 +190,10 @@ web_camouflage(){
     git clone https://github.com/dunizb/sCalc.git
     cd sCalc
     git clone https://github.com/pkfrom/404.git
+    ## 更改 web 目录所有者及权限
+    sed -i "s/%domain%/${domain}/" /home/wwwroot/sCalc/404/404.html
+    chown -R nginx:nginx /home/wwwroot/sCalc
+    chmod -R 755 /home/wwwroot/sCalc
     judge "web 站点伪装"
 
 }
